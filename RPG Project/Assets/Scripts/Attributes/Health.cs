@@ -1,4 +1,5 @@
 using System;
+using Newtonsoft.Json.Linq;
 using GameDevTV.Utils;
 using RPG.Core;
 using GameDevTV.Saving;
@@ -8,7 +9,7 @@ using UnityEngine.Events;
 
 namespace RPG.Attributes
 {
-    public class Health : MonoBehaviour, ISaveable
+    public class Health : MonoBehaviour, ISaveable, IJsonSaveable
     {
         [SerializeField] float regenerationPercentage = 70;
         [SerializeField] TakeDamageEvent takeDamage;
@@ -134,5 +135,17 @@ namespace RPG.Attributes
             
             UpdateState();
         }
+
+        public JToken CaptureAsJToken()
+        {
+            return JToken.FromObject(healthPoints.value);
+        }
+
+        public void RestoreFromJToken(JToken state)
+        {
+            healthPoints.value = state.ToObject<float>();
+            UpdateState();
+        }
+
     }
 }
