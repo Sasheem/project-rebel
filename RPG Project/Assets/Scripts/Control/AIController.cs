@@ -59,9 +59,6 @@ namespace RPG.Control
             return transform.position;
         }
 
-        private void Start() {
-        }
-
         private void Update()
         {
             if (health.IsDead()) return;

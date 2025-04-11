@@ -17,11 +17,14 @@ namespace RPG.SceneManagement
 
         public void ContinueGame() 
         {
+            if (!PlayerPrefs.HasKey(currentSaveKey)) return;
+            if (!GetComponent<SavingSystem>().SaveFileExists(GetCurrentSave())) return;
             StartCoroutine(LoadLastScene());
         }
 
         public void NewGame(string saveFile)
         {
+            if (string.IsNullOrEmpty(saveFile)) return;
             SetCurrentSave(saveFile);
             StartCoroutine(LoadFirstScene());
         }
