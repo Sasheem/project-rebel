@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
+using Newtonsoft.Json.Linq;
 using GameDevTV.Saving;
 using GameDevTV.Utils;
 
@@ -12,7 +13,7 @@ namespace GameDevTV.Inventories
     /// 
     /// This component should be placed on the GameObject tagged "Player".
     /// </summary>
-    public class Equipment : MonoBehaviour, ISaveable, IPredicateEvaluator
+    public class Equipment : MonoBehaviour, ISaveable, IJsonSaveable, IPredicateEvaluator
     {
         // STATE
         Dictionary<EquipLocation, EquipableItem> equippedItems = new Dictionary<EquipLocation, EquipableItem>();
@@ -102,6 +103,38 @@ namespace GameDevTV.Inventories
 
             equipmentUpdated?.Invoke();
         }
+
+        public JToken CaptureAsJToken()
+        {
+            JObject state = new JObject();
+            IDictionary<string, JToken> stateDict = state;
+            foreach (var pair in equippedItems)
+            {
+                stateDict[pair.Key.ToString()] = JToken.FromObject(pair.Value.GetItemID());
+            }
+            return state;
+        }
+
+        public void RestoreFromJToken(JToken state)
+        {
+            if(state is JObject stateObject)
+            {
+                equippedItems.Clear();
+                IDictionary<string, JToken> stateDict = stateObject;
+                foreach (var pair in stateObject)
+                {
+                    if (Enum.TryParse(pair.Key, true, out EquipLocation key))
+                    {
+                        if (InventoryItem.GetFromID(pair.Value.ToObject<string>()) is EquipableItem item)
+                        {
+                            equippedItems[key] = item;
+                        }
+                    }
+                }
+            }
+            equipmentUpdated?.Invoke();
+        }
+
 
         public bool? Evaluate(string predicate, string[] parameters)
         {
