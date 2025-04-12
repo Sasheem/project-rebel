@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using Newtonsoft.Json.Linq;
 using UnityEngine;
 
 namespace RPG.Quests
@@ -71,5 +72,38 @@ namespace RPG.Quests
             state.completedObjectives = completedObjectives;
             return state;
         }
+
+        public QuestStatus(JToken objectState)
+        {
+            if (objectState is JObject state)
+            {
+                IDictionary<string, JToken> stateDict = state;
+                quest = Quest.GetByName(stateDict["questName"].ToObject<string>());
+                completedObjectives.Clear();
+                if (stateDict["completedObjectives"] is JArray completedState)
+                {
+                    IList<JToken> completedStateArray = completedState;
+                    foreach (JToken objective in completedStateArray)
+                    {
+                        completedObjectives.Add(objective.ToObject<string>());
+                    }
+                }
+            }
+        }
+        public JToken CaptureAsJToken()
+        {
+            JObject state = new JObject();
+            IDictionary<string, JToken> stateDict = state;
+            stateDict["questName"] = quest.name;
+            JArray completedState = new JArray();
+            IList<JToken> completedStateArray = completedState;
+            foreach (string objective in completedObjectives)
+            {
+                completedStateArray.Add(JToken.FromObject(objective));
+            }
+            stateDict["completedObjectives"] = completedState;
+            return state;
+        }
+
     }
 }
