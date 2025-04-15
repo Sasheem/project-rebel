@@ -9,7 +9,7 @@ using UnityEngine;
 
 namespace RPG.Quests
 {
-    public class QuestList : MonoBehaviour, ISaveable, IPredicateEvaluator, IJsonSaveable
+    public class QuestList : MonoBehaviour, IPredicateEvaluator, IJsonSaveable
     {
         List<QuestStatus> statuses = new List<QuestStatus>();
 
@@ -93,28 +93,6 @@ namespace RPG.Quests
                         CompleteObjective(quest, objective.reference);
                     }
                 }
-            }
-        }
-
-        public object CaptureState()
-        {
-            List<object> state = new List<object>();
-            foreach (QuestStatus status in statuses)
-            {
-                state.Add(status.CaptureState());
-            }
-            return state;
-        }
-
-        public void RestoreState(object state)
-        {
-            List<object> stateList = state as List<object>;
-            if (stateList == null) return;
-
-            statuses.Clear();
-            foreach (object objectState in stateList)
-            {
-                statuses.Add(new QuestStatus(objectState));
             }
         }
 

@@ -8,7 +8,7 @@ namespace GameDevTV.Inventories
     /// Spawns pickups that should exist on first load in a level. This
     /// automatically spawns the correct prefab for a given inventory item.
     /// </summary>
-    public class PickupSpawner : MonoBehaviour, ISaveable, IJsonSaveable
+    public class PickupSpawner : MonoBehaviour, IJsonSaveable
     {
         // CONFIG DATA
         [SerializeField] InventoryItem item = null;
@@ -53,26 +53,6 @@ namespace GameDevTV.Inventories
             if (GetPickup())
             {
                 Destroy(GetPickup().gameObject);
-            }
-        }
-
-        object ISaveable.CaptureState()
-        {
-            return isCollected();
-        }
-
-        void ISaveable.RestoreState(object state)
-        {
-            bool shouldBeCollected = (bool)state;
-
-            if (shouldBeCollected && !isCollected())
-            {
-                DestroyPickup();
-            }
-
-            if (!shouldBeCollected && isCollected())
-            {
-                SpawnPickup();
             }
         }
 

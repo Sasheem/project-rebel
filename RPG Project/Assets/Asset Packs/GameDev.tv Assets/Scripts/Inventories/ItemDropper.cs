@@ -10,7 +10,7 @@ namespace GameDevTV.Inventories
     /// To be placed on anything that wishes to drop pickups into the world.
     /// Tracks the drops for saving and restoring.
     /// </summary>
-    public class ItemDropper : MonoBehaviour, ISaveable, IJsonSaveable
+    public class ItemDropper : MonoBehaviour, IJsonSaveable
     {
         // STATE
         private List<Pickup> droppedItems = new List<Pickup>();
@@ -64,31 +64,6 @@ namespace GameDevTV.Inventories
             public string itemID;
             public SerializableVector3 position;
             public int number;
-        }
-
-        object ISaveable.CaptureState()
-        {
-            RemoveDestroyedDrops();
-            var droppedItemsList = new DropRecord[droppedItems.Count];
-            for (int i = 0; i < droppedItemsList.Length; i++)
-            {
-                droppedItemsList[i].itemID = droppedItems[i].GetItem().GetItemID();
-                droppedItemsList[i].position = new SerializableVector3(droppedItems[i].transform.position);
-                droppedItemsList[i].number = droppedItems[i].GetNumber();
-            }
-            return droppedItemsList;
-        }
-
-        void ISaveable.RestoreState(object state)
-        {
-            var droppedItemsList = (DropRecord[])state;
-            foreach (var item in droppedItemsList)
-            {
-                var pickupItem = InventoryItem.GetFromID(item.itemID);
-                Vector3 position = item.position.ToVector();
-                int number = item.number;
-                SpawnPickup(pickupItem, position, number);
-            }
         }
 
         /// <summary>

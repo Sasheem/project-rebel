@@ -7,7 +7,7 @@ using RPG.Attributes;
 
 namespace RPG.Movement
 {
-    public class Mover : MonoBehaviour, IAction, ISaveable, IJsonSaveable
+    public class Mover : MonoBehaviour, IAction, IJsonSaveable
     {
         [SerializeField] Transform target;
         [SerializeField] float maxSpeed = 6f;
@@ -75,20 +75,6 @@ namespace RPG.Movement
             }
 
             return total;
-        }
-
-        public object CaptureState()
-        {
-            return new SerializableVector3(transform.position);
-        }
-
-        public void RestoreState(object state)
-        {
-            SerializableVector3 position = (SerializableVector3)state;
-            navMeshAgent.enabled = false;
-            transform.position = position.ToVector();
-            navMeshAgent.enabled = true;
-            GetComponent<ActionScheduler>().CancelCurrentAction();
         }
 
         public JToken CaptureAsJToken()

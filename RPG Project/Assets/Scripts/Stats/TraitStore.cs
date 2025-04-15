@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace RPG.Stats
 {
-    public class TraitStore : MonoBehaviour, IModifierProvider, ISaveable, IPredicateEvaluator, IJsonSaveable
+    public class TraitStore : MonoBehaviour, IModifierProvider, IPredicateEvaluator, IJsonSaveable
     {
         [SerializeField] TraitBonus[] bonusConfig;
         [System.Serializable]
@@ -126,16 +126,6 @@ namespace RPG.Stats
                 float bonus = percentageBonusCache[stat][trait];
                 yield return bonus * GetPoints(trait);
             }
-        }
-
-        public object CaptureState()
-        {
-            return assignedPoints;
-        }
-
-        public void RestoreState(object state)
-        {
-            assignedPoints = new Dictionary<Trait, int>((IDictionary<Trait, int>)state);
         }
 
         public bool? Evaluate(string predicate, string[] parameters)

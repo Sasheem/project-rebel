@@ -13,7 +13,7 @@ namespace GameDevTV.Inventories
     ///
     /// This component should be placed on the GameObject tagged "Player".
     /// </summary>
-    public class Inventory : MonoBehaviour, ISaveable, IJsonSaveable, IPredicateEvaluator
+    public class Inventory : MonoBehaviour, IJsonSaveable, IPredicateEvaluator
     {
         // CONFIG DATA
         [Tooltip("Allowed size")]
@@ -265,34 +265,6 @@ namespace GameDevTV.Inventories
         {
             public string itemID;
             public int number;
-        }
-    
-        object ISaveable.CaptureState()
-        {
-            var slotStrings = new InventorySlotRecord[inventorySize];
-            for (int i = 0; i < inventorySize; i++)
-            {
-                if (slots[i].item != null)
-                {
-                    slotStrings[i].itemID = slots[i].item.GetItemID();
-                    slotStrings[i].number = slots[i].number;
-                }
-            }
-            return slotStrings;
-        }
-
-        void ISaveable.RestoreState(object state)
-        {
-            var slotStrings = (InventorySlotRecord[])state;
-            for (int i = 0; i < inventorySize; i++)
-            {
-                slots[i].item = InventoryItem.GetFromID(slotStrings[i].itemID);
-                slots[i].number = slotStrings[i].number;
-            }
-            if (inventoryUpdated != null)
-            {
-                inventoryUpdated();
-            }
         }
 
         public JToken CaptureAsJToken()

@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace RPG.Attributes
 {
-    public class Mana : MonoBehaviour, ISaveable, IJsonSaveable
+    public class Mana : MonoBehaviour, IJsonSaveable
     {
         LazyValue<float> mana;
 
@@ -48,16 +48,6 @@ namespace RPG.Attributes
             }
             mana.value -= manaToUse;
             return true;
-        }
-
-        public object CaptureState()
-        {
-            return mana.value;
-        }
-
-        public void RestoreState(object state)
-        {
-            mana.value = (float) state;
         }
 
         public JToken CaptureAsJToken()

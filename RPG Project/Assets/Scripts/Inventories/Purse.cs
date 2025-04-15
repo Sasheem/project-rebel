@@ -5,7 +5,7 @@ using Newtonsoft.Json.Linq;
 using UnityEngine;
 
 namespace RPG.Inventories {
-    public class Purse : MonoBehaviour, ISaveable, IItemStore
+    public class Purse : MonoBehaviour, IItemStore
     {
         [SerializeField] float startingBalance = 400f;
 
@@ -29,16 +29,6 @@ namespace RPG.Inventories {
             {
                 onChange();
             }
-        }
-
-        public object CaptureState()
-        {
-            return balance;
-        }
-
-        public void RestoreState(object state)
-        {
-            balance = (float)state;
         }
 
         public int AddItems(InventoryItem item, int number)

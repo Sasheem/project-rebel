@@ -13,7 +13,7 @@ namespace GameDevTV.Inventories
     /// 
     /// This component should be placed on the GameObject tagged "Player".
     /// </summary>
-    public class Equipment : MonoBehaviour, ISaveable, IJsonSaveable, IPredicateEvaluator
+    public class Equipment : MonoBehaviour, IJsonSaveable, IPredicateEvaluator
     {
         // STATE
         Dictionary<EquipLocation, EquipableItem> equippedItems = new Dictionary<EquipLocation, EquipableItem>();
@@ -75,34 +75,6 @@ namespace GameDevTV.Inventories
         }
 
         // PRIVATE
-
-        object ISaveable.CaptureState()
-        {
-            var equippedItemsForSerialization = new Dictionary<EquipLocation, string>();
-            foreach (var pair in equippedItems)
-            {
-                equippedItemsForSerialization[pair.Key] = pair.Value.GetItemID();
-            }
-            return equippedItemsForSerialization;
-        }
-
-        void ISaveable.RestoreState(object state)
-        {
-            equippedItems = new Dictionary<EquipLocation, EquipableItem>();
-
-            var equippedItemsForSerialization = (Dictionary<EquipLocation, string>)state;
-
-            foreach (var pair in equippedItemsForSerialization)
-            {
-                var item = (EquipableItem)InventoryItem.GetFromID(pair.Value);
-                if (item != null)
-                {
-                    equippedItems[pair.Key] = item;
-                }
-            }
-
-            equipmentUpdated?.Invoke();
-        }
 
         public JToken CaptureAsJToken()
         {
