@@ -1458,6 +1458,11 @@ PrefabInstance:
       propertyPath: m_Padding.m_Right
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6662559137604647884, guid: eba67c3ec1261064aa3bcd41077cf892,
+        type: 3}
+      propertyPath: m_Value
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7552552520929407301, guid: eba67c3ec1261064aa3bcd41077cf892,
         type: 3}
       propertyPath: m_Name
@@ -1576,12 +1581,12 @@ PrefabInstance:
     - target: {fileID: 1215028989291225552, guid: 103047dff3460a4488e59b9913180019,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0
+      value: 1.3999
       objectReference: {fileID: 0}
     - target: {fileID: 1215028989291225552, guid: 103047dff3460a4488e59b9913180019,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -37.991
+      value: -19
       objectReference: {fileID: 0}
     - target: {fileID: 1215028989291225552, guid: 103047dff3460a4488e59b9913180019,
         type: 3}
@@ -1600,8 +1605,13 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4486776434526865628, guid: 103047dff3460a4488e59b9913180019,
         type: 3}
-      propertyPath: m_text
-      value: Mr Bongo's Emporium
+      propertyPath: m_fontSize
+      value: 68
+      objectReference: {fileID: 0}
+    - target: {fileID: 4486776434526865628, guid: 103047dff3460a4488e59b9913180019,
+        type: 3}
+      propertyPath: m_fontSizeBase
+      value: 68
       objectReference: {fileID: 0}
     - target: {fileID: 6432123177183245269, guid: 103047dff3460a4488e59b9913180019,
         type: 3}
