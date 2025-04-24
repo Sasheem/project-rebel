@@ -10,7 +10,8 @@ namespace GameDevTV.Saving
 {
     public class JsonSavingSystem : MonoBehaviour
     {
-        private const string extension = ".json";
+        // private const string extension = ".json";
+        [SerializeField] SavingStrategy strategy;
         
         /// <summary>
         /// Will load the last scene that was saved and restore the state. This
@@ -62,7 +63,8 @@ namespace GameDevTV.Saving
         {
             foreach (string path in Directory.EnumerateFiles(Application.persistentDataPath))
             {
-                if (Path.GetExtension(path) == extension)
+                // if (Path.GetExtension(path) == extension)
+                if (Path.GetExtension(path) == strategy.GetExtension())
                 {
                     yield return Path.GetFileNameWithoutExtension(path);
                 }
@@ -73,36 +75,37 @@ namespace GameDevTV.Saving
 
         private JObject LoadJsonFromFile(string saveFile)
         {
-            string path = GetPathFromSaveFile(saveFile);
-            if (!File.Exists(path))
-            {
-                return new JObject();
-            }
+            // string path = GetPathFromSaveFile(saveFile);
+            // if (!File.Exists(path))
+            // {
+            //     return new JObject();
+            // }
             
-            using (var textReader = File.OpenText(path))
-            {
-                using (var reader = new JsonTextReader(textReader))
-                {
-                    reader.FloatParseHandling = FloatParseHandling.Double;
+            // using (var textReader = File.OpenText(path))
+            // {
+            //     using (var reader = new JsonTextReader(textReader))
+            //     {
+            //         reader.FloatParseHandling = FloatParseHandling.Double;
 
-                    return JObject.Load(reader);
-                }
-            }
-
+            //         return JObject.Load(reader);
+            //     }
+            // }
+            return strategy.LoadFromFile(saveFile);
         }
 
         private void SaveFileAsJSon(string saveFile, JObject state)
         {
-            string path = GetPathFromSaveFile(saveFile);
-            print("Saving to " + path);
-            using (var textWriter = File.CreateText(path))
-            {
-                using (var writer = new JsonTextWriter(textWriter))
-                {
-                    writer.Formatting = Formatting.Indented;
-                    state.WriteTo(writer);
-                }
-            }
+            // string path = GetPathFromSaveFile(saveFile);
+            // print("Saving to " + path);
+            // using (var textWriter = File.CreateText(path))
+            // {
+            //     using (var writer = new JsonTextWriter(textWriter))
+            //     {
+            //         writer.Formatting = Formatting.Indented;
+            //         state.WriteTo(writer);
+            //     }
+            // }
+            strategy.SaveToFile(saveFile, state);
         }
 
 
@@ -134,7 +137,8 @@ namespace GameDevTV.Saving
 
         private string GetPathFromSaveFile(string saveFile)
         {
-            return Path.Combine(Application.persistentDataPath, saveFile + extension);
+            // return Path.Combine(Application.persistentDataPath, saveFile + extension);
+            return strategy.GetPathFromSaveFile(saveFile);
         }
     }
 }
